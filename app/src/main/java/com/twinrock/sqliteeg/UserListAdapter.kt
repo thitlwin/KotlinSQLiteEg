@@ -1,6 +1,4 @@
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteException
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,7 @@ class UserListAdapter(private val userList: MutableList<User>, private val db: S
             parent,
             false
         )
-        return MyViewHolder(layoutView, db)
+        return MyViewHolder(layoutView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -26,8 +24,6 @@ class UserListAdapter(private val userList: MutableList<User>, private val db: S
         holder.tvName.text = user.name
         holder.tvPhone.text = user.phone
         holder.tvAddress.text = user.address
-        holder.imvDelete.setTag(0, position)
-        holder.imvDelete.setTag(1, user)
     }
 
     override fun getItemCount(): Int {
@@ -35,32 +31,15 @@ class UserListAdapter(private val userList: MutableList<User>, private val db: S
         return userList.size
     }
 
-    fun removeItem(position: Int) {
-        userList.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    class MyViewHolder(itemView: View, private val db: SQLiteDatabase) : RecyclerView.ViewHolder(
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(
         itemView
     ) {
         val TAG = javaClass.name
         val  tvName: TextView = itemView.findViewById(R.id.tvName)
         val  tvPhone: TextView = itemView.findViewById(R.id.tvPhone)
         val  tvAddress: TextView = itemView.findViewById(R.id.tvAddress)
-        val  imvDelete: ImageView = itemView.findViewById(R.id.imvDelete)
-
-        init {
-            imvDelete.setOnClickListener {
-                val position = imvDelete.getTag(0)
-                val user: User = imvDelete.getTag(1) as User
-                try {
-                    var res = db.delete("users", "name=?", arrayOf("${user.name}"))
-
-                } catch (e: SQLiteException) {
-                    e.message?.let { it1 -> Log.e(TAG, it1) };
-                }
-            }
-        }
     }
 }
+
+
 
