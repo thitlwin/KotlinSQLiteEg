@@ -20,7 +20,9 @@ class UserListActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_user_list)
+
         val dbHelper = MyDatabaseHelper(this);
         db = dbHelper.writableDatabase;
 
@@ -31,11 +33,13 @@ class UserListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         setRecyclerViewItemSwipeListener()
+
     }
 
     private fun setRecyclerViewItemSwipeListener() {
 
         val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, viewHolder1: RecyclerView.ViewHolder): Boolean {
                 return false
             }
@@ -43,8 +47,11 @@ class UserListActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 val position = viewHolder.adapterPosition
                 var user = userList.get(position)
-                var res = db.delete("users", "name=?", arrayOf("${user.name}"))
+
+                var res = db.delete("users", "name = ? And address = ?", arrayOf("${user.name}", "${user.address}"))
+
                 userList.removeAt(position)
+
                 recyclerView.adapter!!.notifyItemRemoved(position)
 
                 Toast.makeText(this@UserListActivity, "Delete Successful", Toast.LENGTH_SHORT).show()
@@ -52,6 +59,7 @@ class UserListActivity : AppCompatActivity() {
         }
 
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }

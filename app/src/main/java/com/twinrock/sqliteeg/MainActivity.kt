@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
+
         editTextName = findViewById(R.id.edName)
         editTextPhone = findViewById(R.id.edPhone)
         editTextAddress = findViewById(R.id.edAddress)
@@ -68,7 +70,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadUserCountFromPreference() {
         mSharedPreferences = getSharedPreferences(prefName, MODE_PRIVATE)
+
         mEditor = mSharedPreferences.edit()
+
         val userCount = mSharedPreferences.getInt(prefKeyForUserCount, 0)
         chipUserCount.text = "Saved User = $userCount"
     }
@@ -78,7 +82,9 @@ class MainActivity : AppCompatActivity() {
         cv.put("name", editTextName.text.toString())
         cv.put("phone", editTextPhone.text.toString())
         cv.put("address", editTextAddress.text.toString())
+
         var res = db.insert(DatabaseSchema.TableNames.USER, null, cv)
+
         Toast.makeText(MainActivity@ this, "Save Successfull", Toast.LENGTH_SHORT).show()
 
         if (res > 0) {
@@ -98,6 +104,7 @@ class MainActivity : AppCompatActivity() {
     private fun saveUserCountToPreference() {
         mEditor.putInt(prefKeyForUserCount, UserListActivity.userList?.size)
         mEditor.commit()
+
         chipUserCount.text = "Saved User = ${UserListActivity.userList?.size}"
     }
 
@@ -106,8 +113,8 @@ class MainActivity : AppCompatActivity() {
         result.moveToFirst()
         do {
             var user = User(
-                name = result.getString(result.getColumnIndexOrThrow("name")),
-                phone = result.getString(result.getColumnIndexOrThrow("phone")),
+                name = result.getString( result.getColumnIndexOrThrow("name") ),
+                phone = result.getString( result.getColumnIndexOrThrow("phone") ),
                 address = result.getString(result.getColumnIndexOrThrow("address"))
             )
             userList.add(user)

@@ -9,6 +9,7 @@ class MyDatabaseHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     
     var TAG = "--MyDatabaseHelper--"
+
     override fun onCreate(db: SQLiteDatabase) {
         Log.i(TAG, "start onCreate database-----------")
         db.execSQL(DatabaseSchema.CreateTable.USER)
